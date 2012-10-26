@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>Data Import test</title>
+        <script type="text/javascript" src="d3/d3.v2.min.js"></script>
+        <script type="text/javascript">
+            d3.csv("dataset.csv", function(data)
+            {
+                var size = 0;
+                var data_values = new Array();
+                size = data.length;
+        
+                for (var i=0; i < size; i++) {
+                    var row = [data[i].year, data[i].life_expectancy, data[i].population, data[i].birth_death_ratio];
+                    data_values[i] = [row];
+                    document.writeln(data_values[i]);
+                }
+            });
+        </script>
+    </head>
+
+    <body>
+    </body>
+ </html>
