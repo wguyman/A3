@@ -65,6 +65,8 @@ circles
 
 //Delay for transition
 transitionDuration = 1000;
+
+//On mouse hover, change the fill 
 circles
    .on('mouseover', function(d, i) {
      circles.filter(function(p) {
@@ -79,18 +81,20 @@ circles
      })
      .style('fill', 'white');
    })
-  .transition()
+  .transition()//This transition is pretty useless just experimenting. It fades the circles a little on load. 
   .duration(transitionDuration)
       .style('opacity', .75)
       .attr('cx', function(d) { return xScale(d[1]) })
       .attr('cy', function(d) { return yScale(d[2]) });
 
-circles.append("text")
+//Experimentation is there a way to have the text be tied to the labels?
+/*circles.append("text")
        .attr("text-anchor", "middle")
        .attr("dy", ".3em")
        .text(function(d) { return d[0]; });
+*/
 
-//Create labels
+//Create labels manually - be better if these could be attached to the circles
 svg.selectAll("text")
    .data(dataset)
    .enter()
