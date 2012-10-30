@@ -55,7 +55,7 @@ circles
    		return xScale(d[1]);
    })
    .attr("cy", function(d) {
-   		return yScale(d[2]);
+   		return yScale(0);//0 to rise up from the axis
    })
    .attr("r", function(d) {
    		return rScale(d[3]);
@@ -81,7 +81,7 @@ circles
      })
      .style('fill', 'white');
    })
-  .transition()//This transition is pretty useless just experimenting. It fades the circles a little on load. 
+  .transition()//This transition is pretty useless just experimenting. It fades and rises the circles a little on load. 
   .duration(transitionDuration)
       .style('opacity', .75)
       .attr('cx', function(d) { return xScale(d[1]) })
@@ -106,11 +106,15 @@ svg.selectAll("text")
          return xScale(d[1])-5;//-5 to center text. TODO: come up with a better way of doing this.  
    })
    .attr("y", function(d) {
-         return yScale(d[2]);
+         return yScale(0);
    })
    .attr("font-family", "sans-serif")
    .attr("font-size", "11px")
-   .attr("fill", "steelblue");
+   .attr("fill", "steelblue")
+   .transition()//This transition is pretty useless just experimenting. It fades and rises the labels a little on load.  
+  .duration(transitionDuration)
+      .attr('x', function(d) { return xScale(d[1])-5 })
+      .attr('y', function(d) { return yScale(d[2]) });
 
 //Create X axis
 svg.append("g")
