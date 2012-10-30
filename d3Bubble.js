@@ -43,9 +43,12 @@ var svg = d3.select("body")
 			.attr("width", w)
 			.attr("height", h);
 
+//Hold the circles
+var circles = svg.selectAll('circle')
+        .data(dataset);
+
 //Create circles
-svg.selectAll("circle")
-   .data(dataset)
+circles
    .enter()
    .append("circle")
    .attr("cx", function(d) {
@@ -57,8 +60,35 @@ svg.selectAll("circle")
    .attr("r", function(d) {
    		return rScale(d[3]);
    })
-   .attr("fill","white")
+   .attr("fill","yellow")
    .attr("stroke","black");
+
+//Delay for transition
+transitionDuration = 1000;
+circles
+   .on('mouseover', function(d, i) {
+     circles.filter(function(p) {
+       return d === p;
+     })
+     .style('fill', 'steelblue');
+   })
+   // Clear the fill
+   .on('mouseout', function(d, i) {
+     circles.filter(function(p) {
+       return d === p;
+     })
+     .style('fill', 'white');
+   })
+  .transition()
+  .duration(transitionDuration)
+      .style('opacity', .75)
+      .attr('cx', function(d) { return xScale(d[1]) })
+      .attr('cy', function(d) { return yScale(d[2]) });
+
+circles.append("text")
+       .attr("text-anchor", "middle")
+       .attr("dy", ".3em")
+       .text(function(d) { return d[0]; });
 
 //Create labels
 svg.selectAll("text")
@@ -66,17 +96,17 @@ svg.selectAll("text")
    .enter()
    .append("text")
    .text(function(d) {
-   		return d[0];
+         return d[0];
    })
    .attr("x", function(d) {
-   		return xScale(d[1])-5;//-5 to center text. TODO: come up with a better way of doing this.  
+         return xScale(d[1])-5;//-5 to center text. TODO: come up with a better way of doing this.  
    })
    .attr("y", function(d) {
-   		return yScale(d[2]);
+         return yScale(d[2]);
    })
    .attr("font-family", "sans-serif")
    .attr("font-size", "11px")
-   .attr("fill", "blue");
+   .attr("fill", "steelblue");
 
 //Create X axis
 svg.append("g")
