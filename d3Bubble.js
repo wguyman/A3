@@ -1,3 +1,4 @@
+
 //Width and height
 var w = 1000;
 var h = 600;
@@ -38,19 +39,19 @@ var yAxis = d3.svg.axis()
 				  .ticks(10);
 
 //Create SVG element
-var svg = d3.select("body")
+var svg = d3.select("#vis")
 			.append("svg")
 			.attr("width", w)
 			.attr("height", h);
 
-
+//Node selections 
 var node = svg.selectAll(".node")
     .data(dataset)
   .enter().append("g")
     .attr("class", "node");
 
 
-
+//Draw circles
 node.append("circle")
     .attr("cx", function(d) {
       return xScale(d[1]);
@@ -64,6 +65,7 @@ node.append("circle")
    .attr("fill","yellow")
    .attr("stroke","black");
 
+//Draw text
 node.append("text")
     .attr("dx", function(d) {
       return xScale(d[1])-15;//Correction to center the year in the bubble
@@ -111,6 +113,7 @@ circles
       .attr('cx', function(d) { return xScale(d[1]) })
       .attr('cy', function(d) { return yScale(d[2]) });
 
+//Basically the same as above. TODO: Try and abstract out the code below
 //On mouse hover, change the fill to highlight the current circle (others fade away)
 circleLabels
    .on('mouseover', function(d, i) {
@@ -170,3 +173,10 @@ svg.append("text")
     .attr("dy", ".75em")
     .attr("transform", "rotate(-90)")
     .text("Life Expectancy (years)");
+
+
+//Tooltip
+//this.tooltip = CustomTooltip("gates_tooltip", 240);
+
+
+
