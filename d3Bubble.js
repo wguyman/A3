@@ -43,43 +43,51 @@ var svg = d3.select("body")
 			.attr("width", w)
 			.attr("height", h);
 
-//Hold the circles
-var circles = svg.selectAll('circle')
-        .data(dataset);
 
-//Create circles
-circles
-   .enter()
-   .append("circle")
-   .attr("cx", function(d) {
-   		return xScale(d[1]);
+var node = svg.selectAll(".node")
+    .data(dataset)
+  .enter().append("g")
+    .attr("class", "node");
+
+node.append("circle")
+    .attr("cx", function(d) {
+      return xScale(d[1]);
    })
    .attr("cy", function(d) {
-   		return yScale(0);//0 to rise up from the axis
+      return yScale(d[2]);//0 to rise up from the axis
    })
    .attr("r", function(d) {
-   		return rScale(d[3]);
+      return rScale(d[3]);
    })
    .attr("fill","yellow")
    .attr("stroke","black");
 
-//Delay for transition
+node.append("text")
+    .attr("dx", function(d) {
+      return xScale(d[1])-15;//Correction to center the year in the bubble
+   })
+   .attr("dy", function(d) {
+      return yScale(d[2])+5;//Correction to shift year to center in
+   })
+    .text(function(d) { return d[0]; });
+
+// //Delay for transition
 transitionDuration = 1000;
 
 //On mouse hover, change the fill 
-circles
+node
    .on('mouseover', function(d, i) {
-     circles.filter(function(p) {
+     node.filter(function(p) {
        return d === p;
      })
      .style('fill', 'steelblue');
    })
    // Clear the fill
    .on('mouseout', function(d, i) {
-     circles.filter(function(p) {
+     node.filter(function(p) {
        return d === p;
      })
-     .style('fill', 'white');
+     .style('fill', 'black');
    })
   .transition()//This transition is pretty useless just experimenting. It fades and rises the circles a little on load. 
   .duration(transitionDuration)
@@ -87,34 +95,6 @@ circles
       .attr('cx', function(d) { return xScale(d[1]) })
       .attr('cy', function(d) { return yScale(d[2]) });
 
-//Experimentation is there a way to have the text be tied to the labels?
-/*circles.append("text")
-       .attr("text-anchor", "middle")
-       .attr("dy", ".3em")
-       .text(function(d) { return d[0]; });
-*/
-
-//Create labels manually - be better if these could be attached to the circles
-svg.selectAll("text")
-   .data(dataset)
-   .enter()
-   .append("text")
-   .text(function(d) {
-         return d[0];
-   })
-   .attr("x", function(d) {
-         return xScale(d[1])-5;//-5 to center text. TODO: come up with a better way of doing this.  
-   })
-   .attr("y", function(d) {
-         return yScale(0);
-   })
-   .attr("font-family", "sans-serif")
-   .attr("font-size", "11px")
-   .attr("fill", "steelblue")
-   .transition()//This transition is pretty useless just experimenting. It fades and rises the labels a little on load.  
-  .duration(transitionDuration)
-      .attr('x', function(d) { return xScale(d[1])-5 })
-      .attr('y', function(d) { return yScale(d[2]) });
 
 //Create X axis
 svg.append("g")
