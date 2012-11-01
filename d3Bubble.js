@@ -1,3 +1,7 @@
+var nodes;
+var transitionDuration;
+
+d3.csv("dataset.csv", function(dataset) {
 //Tooltip
 tooltip = CustomTooltip("vis_tooltip", 200);
 
@@ -6,26 +10,17 @@ var w = 1000;
 var h = 600;
 var padding = 50;
 
-
-//Static dataset in the format [Year, population, age, ratio of deaths to births, male=1 or female=0]
-var dataset = [
-				[1990, 500, 40, 5, 1], [1991, 600, 45, 6, 0], [1992, 700, 50, 6, 1], [1993, 800, 50, 6, 0], [1994, 850, 95, 6, 1],
-				[1995, 900, 70, 7, 1], [1996, 1000, 65, 7, 1], [1997, 1100, 67, 5, 1], [1998, 1200, 75, 8, 1], [1999, 1300, 88, 6, 0],
-				[2000, 1300, 85, 8, 0]
-			  ];
-
-
 //Create scale functions
 var xScale = d3.scale.linear()
-.domain([0, d3.max(dataset, function(d) { return d[1]; })])
+.domain([0, d3.max(dataset, function(d) { return d.population; })])
 .range([padding, w - padding * 2]);
 
 var yScale = d3.scale.linear()
-.domain([0, d3.max(dataset, function(d) { return d[2]; })])
+.domain([0, d3.max(dataset, function(d) { return d.age; })])
 .range([h - padding, padding]);
 
 var rScale = d3.scale.linear()
-.domain([0, d3.max(dataset, function(d) { return d[3]; })])
+.domain([0, d3.max(dataset, function(d) { return d.birth_death_ratio; })])
 .range([20, 30]);//Change this if you want the range of the radius to differ
 
 //Define X axis
@@ -41,7 +36,7 @@ var yAxis = d3.svg.axis()
 .ticks(10);
 
 //Create SVG element
-var svg = d3.select("#vis")
+svg = d3.select("#vis")
 			.append("svg")
 			.attr("width", w)
 			.attr("height", h);
@@ -59,21 +54,21 @@ var gnodes = svg.selectAll(".node").data(dataset)
          .enter().append("g")
          .each(generateCirclesAndText)
          .attr("class", "node")
-         .attr("transform",function(d) {return "translate("+xScale(d[1]) +",600)"})
+         .attr("transform",function(d) {return "translate("+xScale(d.population) +",600)"})
          .transition()//This transition is pretty useless just experimenting. It fades and rises the circles a little on load. 
          .duration(transitionDuration)
           .style('opacity', .75)
-          .attr("transform",function(d) {return "translate("+xScale(d[1]) +"," + yScale(d[2])+")"})
+          .attr("transform",function(d) {return "translate("+xScale(d.population) +"," + yScale(d.age)+")"})
 
 //Use this selector to manipulate the bubbles
-var nodes = svg.selectAll(".node").data(dataset);
+nodes = svg.selectAll(".node").data(dataset);
 
 //draws circle and text within gnode
 function generateCirclesAndText(d){
   //gnode is this
   d3.select(this).append("circle")
       .attr("r", function(d) {
-        return rScale(d[3]);
+        return rScale(d.birth_death_ratio);
       })
       .attr("cx", function(d) {
         return 0;
@@ -82,7 +77,7 @@ function generateCirclesAndText(d){
         return 0;//0 to rise up from the axis
       })
       .attr("fill",function(d) {
-        if(d[4]===0)
+        if(d.gender == 0)
           return "steelblue";
         else
           return "pink";
@@ -90,7 +85,7 @@ function generateCirclesAndText(d){
       .attr("stroke","black");
   d3.select(this).append("text")
       .attr("text-anchor","middle")
-      .text(function(d) { return d[0]; });
+      .text(function(d) { return d.year; });
 }
 
 
@@ -106,10 +101,10 @@ nodes.on('mouseover', function(d, i) {
    return d == p;
   })
   .each(function(selection){
-    console.log(selection[0])//gives the node at the first array position
-    var content = "<span class=\"name\">Population in "+selection[0]+":</span><span class=\"value\"> " + selection[1] + "</span><br/>";
-    content += "<span class=\"name\">You'll live to age</span><span class=\"value\"> " + selection[2] + "</span><br/>";
-    content += "<span class=\"name\">Ratio of births/deaths in "+selection[0]+":</span><span class=\"value\"> " + selection[3] + "</span><br/>";
+    console.log(selection.year)//gives the node at the first array position
+    var content = "<span class=\"name\">Population in "+selection.year+":</span><span class=\"value\"> " + selection.population + "</span><br/>";
+    content += "<span class=\"name\">You'll live to age</span><span class=\"value\"> " + selection.age + "</span><br/>";
+    content += "<span class=\"name\">Ratio of births/deaths in "+selection.year+":</span><span class=\"value\"> " + selection.birth_death_ratio + "</span><br/>";
     return tooltip.showTooltip(content, d3.event)//need event capture, typically content, event, selection 
   });
 })
@@ -154,8 +149,10 @@ svg.append("text")
     .attr("dy", ".75em")
     .attr("transform", "rotate(-90)")
     .text("Life Expectancy (years)");
+});
 
-//When the user clicks to filter by gender 
+//When the user clicks to filter by gender
+
 function toggle_view(gender){
   nodes
     .transition()
@@ -168,7 +165,7 @@ function toggle_view(gender){
     type = 1;
   if(gender!="both"){
     nodes.filter(function(p) {
-       return type != p[4];
+       return type != p.gender;
       })
       .transition()
       .duration(transitionDuration)
