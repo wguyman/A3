@@ -2,10 +2,44 @@
     <head>
         <title>D3 Test</title>
         <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="stylesheet" href="bootstrap.min.css">
         <script type="text/javascript" src="d3/d3.v2.js"></script>
+          <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script> -->
+  <script>window.jQuery || document.write('<script src="jquery.min.js"><\/script>')</script>
     </head>
     <body>
-    	<!-- Src file for all the javascript is below -->
+        <div id="container" class="container">
+        <header>
+        <h1>When will you die?</h1>
+        </header>
+        <div id="main" role="main">
+          <div id="view_selection" class="btn-group">
+            <a href="#" id="both" class="btn active">Both</a>
+            <a href="#" id="male" class="btn">Male</a>
+            <a href="#" id="female" class="btn">Female</a>
+          </div>
+          <div id="vis"></div>
+        </div>
+        <footer>
+        <p>This visualization needs some serious work.</p>
+        </footer>
+        </div> <!--! end of #container -->
+        <!-- Tooltip source -->
+         <script src="CustomTooltip.js"></script>
+        <!-- Src file for all the main javascript is d3Bubble.js -->
         <script type="text/javascript" src="d3Bubble.js"></script>
+        <script type="text/javascript">
+        $(document).ready(function() {
+            $(document).ready(function() {
+              $('#view_selection a').click(function() {
+                var view_type = $(this).attr('id');
+                $('#view_selection a').removeClass('active');
+                $(this).toggleClass('active');
+                toggle_view(view_type);
+                return false;
+              });
+            });
+        });
+        </script>
     </body>
 </html>  
