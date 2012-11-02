@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 
@@ -72,3 +73,54 @@ $ git checkout gh-pages
 
   </body>
 </html>
+=======
+<html>
+    <head>
+        <title>CS448B A3</title>
+        <link rel="stylesheet" href="bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="styles.css">
+        <script type="text/javascript" src="d3/d3.v2.js"></script>
+          <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script> -->
+  <script>window.jQuery || document.write('<script src="jquery.min.js"><\/script>')</script>
+    </head>
+    <body>
+        <div id="container" class="container">
+        <header>
+        <h1>When will you die?</h1>
+        <h4>(Hover over the bubbles to find the year you were born)</h4>
+        </header>
+        <div id="main" role="main">
+          <div id="view_selection" class="btn-group">
+            <a href="#" id="both" class="btn active">Both</a>
+            <a href="#" id="male" class="btn" style="color:steelblue;">Male</a>
+            <a href="#" id="female" class="btn" style="color:pink;">Female</a>
+          </div>
+          <div id="vis"></div>
+          <div id="barVis"></div>
+        </div>
+        <footer>
+          <div id="caption"></div>
+          <br></br>
+        <p>The first foray into D3! Created by Will and Stephanie.</p>
+        </footer>
+        </div> <!--! end of #container -->
+        <!-- Tooltip source -->
+         <script src="CustomTooltip.js"></script>
+        <!-- Src file for all the main javascript is d3Bubble.js -->
+        <script type="text/javascript" src="d3Bubble.js"></script>
+        <script type="text/javascript">
+        $(document).ready(function() {
+            $(document).ready(function() {
+              $('#view_selection a').click(function() {
+                var view_type = $(this).attr('id');
+                $('#view_selection a').removeClass('active');
+                //$(this).toggleClass('active');
+                toggle_view(view_type);
+                return false;
+              });
+            });
+        });
+        </script>
+    </body>
+</html>  
+>>>>>>> master
