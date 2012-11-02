@@ -11,6 +11,7 @@
         <div id="container" class="container">
         <header>
         <h1>When will you die?</h1>
+        <h4>(Hover over the bubbles to find the year you were born)</h4>
         </header>
         <div id="main" role="main">
           <div id="view_selection" class="btn-group">
@@ -19,9 +20,12 @@
             <a href="#" id="female" class="btn" style="color:pink;">Female</a>
           </div>
           <div id="vis"></div>
+          <div id="barVis"></div>
         </div>
         <footer>
-        <p>This visualization is a work and progress! Created by Will and Stephanie.</p>
+          <div id="caption"></div>
+          <br></br>
+        <p>The first foray into D3! Created by Will and Stephanie.</p>
         </footer>
         </div> <!--! end of #container -->
         <!-- Tooltip source -->
@@ -34,7 +38,7 @@
               $('#view_selection a').click(function() {
                 var view_type = $(this).attr('id');
                 $('#view_selection a').removeClass('active');
-                $(this).toggleClass('active');
+                //$(this).toggleClass('active');
                 toggle_view(view_type);
                 return false;
               });
