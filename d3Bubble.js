@@ -71,7 +71,7 @@ var gnodes = svg.selectAll(".node").data(dataset)
          .each(generateCirclesAndText)
          .attr("class", "node")
          .attr("transform",function(d) {return "translate("+xScale(d[1]) +",600)"})
-         .style('opacity', .75)
+         .style('opacity', .8)
          .attr("transform",function(d) {return "translate("+xScale(d[1]) +"," + yScale(d[2])+")"});
 
 //Use this selector to manipulate the bubbles
@@ -134,6 +134,11 @@ nodes.on('mouseout', function(d, i) {
    .style('opacity', '.75');
   tooltip.hideTooltip();
 })
+
+//If user clicks on a node scroll to the bar chart
+nodes.on("click", function(d, i){
+  $('#goUp').ScrollTo();
+});
 
 
 //Create X axis
@@ -266,7 +271,7 @@ svgBar.selectAll(".bar")
 function changeBar(year, gender){
 
   //Update text
-  document.getElementById("caption").innerHTML="Age you might live to if born in "+year;
+  document.getElementById("caption").innerHTML="Age if born in "+year;
 
   //clear all bars not for this year
   svgBar.selectAll(".bar").data(maleExpectancies).style('opacity',0);
@@ -301,3 +306,9 @@ function changeBar(year, gender){
   }
   
 }
+
+var bars = svgBar.selectAll(".bar");
+//If user clicks on a bar scroll back up to the bubble chart
+bars.on("click", function(d, i){
+  $('#container').ScrollTo();
+});
